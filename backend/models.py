@@ -19,11 +19,21 @@ class FanartType(models.Model):
 
 class Platforms(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=-1)
+    name = models.CharField(max_length=100)
 
     class Meta:
         managed = False
         db_table = 'platforms'
+
+class Media(models.Model):
+    id = models.IntegerField(primary_key=True)
+    release_date = models.DateField()
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'media'
 
 
 class Post(models.Model):
@@ -70,16 +80,6 @@ class Tvshow(models.Model):
         managed = False
         db_table = 'tvshow'
 
-class Media(models.Model):
-    id = models.IntegerField(primary_key=True)
-    release_date = models.DateField()
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=500, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'media'
-
 class VideoGame(models.Model):
     id = models.ForeignKey(Media, models.DO_NOTHING, db_column='id', primary_key=True)
     platform = models.ForeignKey(Platforms, models.DO_NOTHING)
@@ -89,7 +89,7 @@ class VideoGame(models.Model):
         db_table = 'video_game'
 
 class Film(models.Model):
-    id = models.ForeignKey('Media', models.DO_NOTHING, db_column='id', primary_key=True)
+    id = models.ForeignKey(Media, models.DO_NOTHING, db_column='id', primary_key=True)
     duration = models.IntegerField(blank=True, null=True)
 
     class Meta:
