@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from .user_serializers import UserEndpoint
+from rest_framework import routers
+from .user_serializers import UserViewSet
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('user/',UserEndpoint.as_view()),
+    path('', include(router.urls)),
 ]
