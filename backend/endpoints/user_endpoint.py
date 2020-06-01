@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 
-from .models import User
+from backend.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,7 +23,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
         input_serializer = UserPostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
         users = User.objects.all()
