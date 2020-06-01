@@ -30,7 +30,8 @@ class Media(models.Model):
     release_date = models.DateField()
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500, blank=True, null=True)
-
+    image = models.CharField(max_length=1000, blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'media'
@@ -40,7 +41,7 @@ class Post(models.Model):
     id = models.IntegerField(primary_key=True)
     publish_time = models.DateTimeField()
     text_content = models.CharField(max_length=300, blank=True, null=True)
-    media_url = models.CharField(max_length=100, blank=True, null=True)
+    media_url = models.CharField(max_length=1000, blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING)
     fanart = models.ForeignKey(FanartType, models.DO_NOTHING)
     media = models.ForeignKey(Media, models.DO_NOTHING)
