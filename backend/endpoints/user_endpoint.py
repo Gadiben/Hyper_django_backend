@@ -7,12 +7,12 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 
 from backend.forms import ConnexionForm
-from backend.models import User, UserUserAuthDjango
-from .authenticate_endpoint import signup
+from backend.models import AppUser, UserUserAuthDjango
+from backend.service.auth_user_service import signup
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = AppUser
         fields = ('pseudo', 'gender', 'date_of_birth', 'longitude', 'latitude')
 
 class UserPostSerializer(serializers.Serializer):
@@ -32,7 +32,7 @@ class ViewProfil(BasePermission):
             return int(user_user_auth.user_id.id)==int(view.kwargs['pk'])
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('id')
+    queryset = AppUser.objects.all().order_by('id')
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
@@ -45,9 +45,9 @@ class UserViewSet(viewsets.ModelViewSet):
         del input_serializer.validated_data["password"]
 
         #Creat application user
-        users = User.objects.all()
+        users = AppUser.objects.all()
         new_id=max([el.id for el in users])+1
-        instance,existed = User.objects.get_or_create(id=new_id,**input_serializer.validated_data)
+        instance = AppUser.objects.create(id=new_id,**input_serializer.validated_data)
         
         #Commit credentials
         auth_user.save()
