@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             },
             bases=('auth.user',),
             managers=[
-                ('objects', backend.endpoints.authenticate_endpoint.UserManagerAsync()),
+                ('objects', backend.service.auth_user_service.UserManagerAsync()),
             ],
         ),
         migrations.RenameField(

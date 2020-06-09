@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +25,7 @@ SECRET_KEY = 'yrqy87!i-d9l80)st*0+xxp1vx&6$$e1ld7j@rowcsf8(1oz16'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = []
 
@@ -97,6 +99,12 @@ DATABASES = {
     }
 }
 
+if TESTING:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'TEST_NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

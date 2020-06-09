@@ -1,4 +1,4 @@
-from backend.endpoints.authenticate_endpoint import UserAsync
+from backend.service.auth_user_service import UserAsync
 
 from django.db import models
 
@@ -37,7 +37,7 @@ class Post(models.Model):
     publish_time = models.DateTimeField()
     text_content = models.CharField(max_length=300, blank=True, null=True)
     media_url = models.CharField(max_length=1000, blank=True, null=True)
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('AppUser', models.DO_NOTHING)
     fanart = models.ForeignKey(FanartType, models.DO_NOTHING)
     media = models.ForeignKey(Media, models.DO_NOTHING)
 
@@ -46,7 +46,7 @@ class Post(models.Model):
         db_table = 'post'
 
 
-class User(models.Model):
+class AppUser(models.Model):
     id = models.IntegerField(primary_key=True)
     pseudo = models.CharField(max_length=100)
     longitude = models.DecimalField(max_digits=4, decimal_places=2)
@@ -56,13 +56,13 @@ class User(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'user_'
+        db_table = 'app_user'
 
 
 class UserLibrairy(models.Model):
     id = models.IntegerField(primary_key=True)
     media = models.ForeignKey(Media, models.DO_NOTHING)
-    user = models.ForeignKey(User, models.DO_NOTHING)
+    user = models.ForeignKey(AppUser, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -93,5 +93,5 @@ class Film(models.Model):
         db_table = 'film'
 
 class UserUserAuthDjango(models.Model):
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user_id = models.OneToOneField(AppUser, on_delete=models.CASCADE, primary_key=True)
     auth_id = models.OneToOneField(UserAsync, on_delete=models.CASCADE)
