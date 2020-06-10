@@ -6,9 +6,6 @@ from backend.service.auth_user_service import signup
 from django.db import IntegrityError
 from mock import patch, Mock
 
-def my_side_effect():
-    raise IntegrityError()
-
 class AuthUserServiceTest(TestCase):
 
     def setUp(self):
@@ -30,5 +27,6 @@ class AuthUserServiceTest(TestCase):
         m_connexion_form.cleaned_data.return_value = self.form_data
 
         mock_create_user.side_effect = IntegrityError()
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError):
             user = signup(self.form_data)
+            mock_create_user.assert_called_once()

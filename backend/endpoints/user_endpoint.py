@@ -8,7 +8,7 @@ from rest_framework import viewsets
 
 from backend.forms import ConnexionForm
 from backend.models import AppUser, UserUserAuthDjango
-from backend.service.auth_user_service import signup
+from backend.service.user_service import create
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +40,7 @@ class UserViewSet(viewsets.ModelViewSet):
         input_serializer = UserPostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
         
-        userUserAuthDjango = UserService.create(input_serializer.validated_data)
+        userUserAuthDjango = create(input_serializer.validated_data)
         
         #Response
         output_serializer = UserSerializer(userUserAuthDjango.user_id)

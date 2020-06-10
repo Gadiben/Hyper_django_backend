@@ -37,6 +37,6 @@ def signup(data):
             user = UserAsync.objects.create_user(username, password=password)
             return user
         except IntegrityError:
-            raise ValidationError("The username already exists")
+            raise IntegrityError("The username already exists")
     else:
         raise ValidationError("Error while validating credentials")

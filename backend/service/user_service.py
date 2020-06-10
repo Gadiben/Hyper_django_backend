@@ -11,29 +11,27 @@ class UserPostSerializer(serializers.Serializer):
     latitude = serializers.DecimalField(max_digits=4,decimal_places=2)
 
 
-class UserService:
+def create(**user_data):
+    #Validate credentials 
 
-    def create(**user_data):
-        #Validate credentials 
+    #Validate input forum
+    input_serializer = UserPostSerializer(data=user_data)
+    input_serializer.is_valid(raise_exception=True)
+    
+    #Validate credentials 
+    auth_user = signup(input_serializer.validated_data)
+    del input_serializer.validated_data["password"]
+    
+    #Create application user
+    users = AppUser.objects.all()
+    new_id=1 if len(users)==0 else max([el.id for el in users])+1
+    instance = AppUser.objects.create(id=new_id,**input_serializer.validated_data)
+    instance.save()
 
-        #Validate input forum
-        input_serializer = UserPostSerializer(data=user_data)
-        input_serializer.is_valid(raise_exception=True)
-        
-        #Validate credentials 
-        auth_user = signup(input_serializer.validated_data)
-        del input_serializer.validated_data["password"]
-        
-        #Creat application user
-        users = AppUser.objects.all()
-        new_id=1 if len(users)==0 else max([el.id for el in users])+1
-        instance = AppUser.objects.create(id=new_id,**input_serializer.validated_data)
-        instance.save()
+    #Commit credentials
+    auth_user.save()
 
-        #Commit credentials
-        auth_user.save()
-
-        #Save link logic - managing
-        userUserAuthDjango = UserUserAuthDjango.objects.create(user_id=instance,auth_id=auth_user)
-        userUserAuthDjango.save()
-        return userUserAuthDjango
+    #Save link logic - managing
+    userUserAuthDjango = UserUserAuthDjango.objects.create(user_id=instance,auth_id=auth_user)
+    userUserAuthDjango.save()
+    return userUserAuthDjango
