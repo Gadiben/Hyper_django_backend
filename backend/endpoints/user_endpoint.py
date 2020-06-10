@@ -40,23 +40,10 @@ class UserViewSet(viewsets.ModelViewSet):
         input_serializer = UserPostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
         
-        #Validate credentials 
-        auth_user = signup(input_serializer.validated_data)
-        del input_serializer.validated_data["password"]
-
-        #Creat application user
-        users = AppUser.objects.all()
-        new_id=max([el.id for el in users])+1
-        instance = AppUser.objects.create(id=new_id,**input_serializer.validated_data)
+        userUserAuthDjango = UserService.create(input_serializer.validated_data)
         
-        #Commit credentials
-        auth_user.save()
-
-        #Save link logic - managing
-        userUserAuthDjango = UserUserAuthDjango.objects.create(user_id=instance,auth_id=auth_user).save()
-
         #Response
-        output_serializer = UserSerializer(instance)
+        output_serializer = UserSerializer(userUserAuthDjango.user_id)
         return Response(output_serializer.data)
 
     def get_permissions(self):
