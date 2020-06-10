@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.models import UserManager
 from backend.forms import ConnexionForm
+from django.forms import ValidationError
+from django.db import IntegrityError
 
 class UserManagerAsync(UserManager):
 
@@ -34,8 +36,7 @@ def signup(data):
         try:
             user = UserAsync.objects.create_user(username, password=password)
             return user
-            # return Response({"message":"Test creating user"})
         except IntegrityError:
             raise ValidationError("The username already exists")
     else:
-        raise ValidationError("Error while validation credentials")
+        raise ValidationError("Error while validating credentials")
