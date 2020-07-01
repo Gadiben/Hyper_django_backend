@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('gender', models.CharField(max_length=20)),
             ],
             options={
-                'db_table': 'app_user',
+                'db_table': 'appuser',
                 'managed': settings.TESTING,
             },
         ),

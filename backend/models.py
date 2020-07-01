@@ -49,6 +49,8 @@ class Post(models.Model):
 class AppUser(models.Model):
     id = models.IntegerField(primary_key=True)
     pseudo = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    password = models.CharField(max_length=1000)
     longitude = models.DecimalField(max_digits=4, decimal_places=2)
     date_of_birth = models.DateField()
     latitude = models.DecimalField(max_digits=4, decimal_places=2)
@@ -56,7 +58,7 @@ class AppUser(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'app_user'
+        db_table = 'appuser'
 
 
 class UserLibrairy(models.Model):
