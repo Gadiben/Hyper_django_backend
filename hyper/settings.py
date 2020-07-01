@@ -29,6 +29,11 @@ TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 # Application definition
 
@@ -44,6 +49,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     
     'backend',
+
+     'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -54,6 +61,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,7 +98,7 @@ WSGI_APPLICATION = 'hyper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Hyper',
+        'NAME': 'Hyper_db',
         'USER': 'postgres',
         'PASSWORD': '123456',
         'HOST': '127.0.0.1',
